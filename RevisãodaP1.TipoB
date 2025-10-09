@@ -1,0 +1,135 @@
+-- TIPO B --
+--6. Classe Livro (atributos públicos)--
+public class Livro {
+    public String titulo;
+    public String autor;
+    public int anoPublicacao;
+
+    public static void main(String[] args) {
+        Livro livro = new Livro();
+        livro.titulo = "Dom Casmurro";
+        livro.autor = "Machado de Assis";
+        livro.anoPublicacao = 1899;
+
+        System.out.println("Título: " + livro.titulo);
+        System.out.println("Autor: " + livro.autor);
+        System.out.println("Ano de Publicação: " + livro.anoPublicacao);
+    }
+}
+
+--7. Classe Funcionario (encapsulamento)--
+public class Funcionario {
+    private String nome;
+    private double salario;
+    private String cargo;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public static void main(String[] args) {
+        Funcionario func = new Funcionario();
+        func.setNome("Ana");
+        func.setSalario(3000.0);
+        func.setCargo("Analista");
+
+        System.out.println("Nome: " + func.getNome());
+        System.out.println("Salário: R$" + func.getSalario());
+        System.out.println("Cargo: " + func.getCargo());
+    }
+}
+
+--8. Supermercado com Descontos--
+import java.util.ArrayList;
+
+public class Supermercado {
+    ArrayList<String> nomesProdutos = new ArrayList<>();
+    ArrayList<Double> precos = new ArrayList<>();
+    ArrayList<Double> descontos = new ArrayList<>();
+
+    public void adicionarProduto(String nome, double preco, double desconto) {
+        nomesProdutos.add(nome);
+        precos.add(preco);
+        descontos.add(desconto);
+    }
+
+    public void listarProdutos() {
+        for (int i = 0; i < nomesProdutos.size(); i++) {
+            double precoDesconto = precos.get(i) * (1 - descontos.get(i));
+            System.out.println(nomesProdutos.get(i) + ": Preço original: R$" + precos.get(i) + " - Com desconto: R$" + precoDesconto);
+        }
+    }
+
+    public double totalCompraComDesconto() {
+        double total = 0;
+        for (int i = 0; i < precos.size(); i++) {
+            total += precos.get(i) * (1 - descontos.get(i));
+        }
+        return total;
+    }
+
+    public void produtoMaiorEconomia() {
+        double maiorEconomia = 0;
+        String produto = "";
+        for (int i = 0; i < nomesProdutos.size(); i++) {
+            double economia = precos.get(i) * descontos.get(i);
+            if (economia > maiorEconomia) {
+                maiorEconomia = economia;
+                produto = nomesProdutos.get(i);
+            }
+        }
+        System.out.println("Maior economia: " + produto + " - R$" + maiorEconomia);
+    }
+
+    public void comprarProduto(String nome) {
+        int index = nomesProdutos.indexOf(nome);
+        if (index >= 0) {
+            nomesProdutos.remove(index);
+            precos.remove(index);
+            descontos.remove(index);
+            System.out.println(nome + " comprado.");
+        } else {
+            System.out.println("Produto não encontrado.");
+        }
+    }
+
+    public void reporProduto(String nome, double preco, double desconto) {
+        adicionarProduto(nome, preco, desconto);
+        System.out.println(nome + " reposto.");
+    }
+
+    public static void main(String[] args) {
+        Supermercado mercado = new Supermercado();
+        mercado.adicionarProduto("Arroz", 20.0, 0.1);
+        mercado.adicionarProduto("Feijão", 8.0, 0.2);
+        mercado.adicionarProduto("Óleo", 6.0, 0.15);
+
+        mercado.listarProdutos();
+        System.out.println("Total da compra: R$" + mercado.totalCompraComDesconto());
+        mercado.produtoMaiorEconomia();
+        mercado.comprarProduto("Feijão");
+        mercado.reporProduto("Feijão", 9.0, 0.1);
+        mercado.listarProdutos();
+    }
+}
+
