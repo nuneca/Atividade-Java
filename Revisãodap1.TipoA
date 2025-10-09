@@ -1,0 +1,135 @@
+--TIPO A--
+--6. Classe Carro (atributos públicos)--
+public class Carro {
+    public String marca;
+    public String modelo;
+    public int ano;
+
+    public static void main(String[] args) {
+        Carro carro1 = new Carro();
+        carro1.marca = "Toyota";
+        carro1.modelo = "Corolla";
+        carro1.ano = 2020;
+
+        System.out.println("Marca: " + carro1.marca);
+        System.out.println("Modelo: " + carro1.modelo);
+        System.out.println("Ano: " + carro1.ano);
+    }
+}
+
+--7. Classe Aluno (encapsulamento)--
+public class Aluno {
+    private String nome;
+    private int matricula;
+    private double notaFinal;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
+
+    public double getNotaFinal() {
+        return notaFinal;
+    }
+
+    public void setNotaFinal(double notaFinal) {
+        this.notaFinal = notaFinal;
+    }
+
+    public static void main(String[] args) {
+        Aluno aluno = new Aluno();
+        aluno.setNome("João Silva");
+        aluno.setMatricula(12345);
+        aluno.setNotaFinal(8.5);
+
+        System.out.println("Nome: " + aluno.getNome());
+        System.out.println("Matrícula: " + aluno.getMatricula());
+        System.out.println("Nota Final: " + aluno.getNotaFinal());
+    }
+}
+
+--8. Farmácia com Controle de Validade--
+import java.util.ArrayList;
+
+public class Farmacia {
+    ArrayList<String> nomesMedicamentos = new ArrayList<>();
+    ArrayList<Integer> diasParaVencimento = new ArrayList<>();
+    ArrayList<Double> precos = new ArrayList<>();
+
+    public void adicionarMedicamento(String nome, int dias, double preco) {
+        nomesMedicamentos.add(nome);
+        diasParaVencimento.add(dias);
+        precos.add(preco);
+    }
+
+    public void mostrarMedicamentos() {
+        for (int i = 0; i < nomesMedicamentos.size(); i++) {
+            System.out.println(nomesMedicamentos.get(i) + " - R$" + precos.get(i) + " - Dias para vencer: " + diasParaVencimento.get(i));
+        }
+    }
+
+    public double mediaDiasParaVencer() {
+        int soma = 0;
+        for (int dias : diasParaVencimento) {
+            soma += dias;
+        }
+        return (double) soma / diasParaVencimento.size();
+    }
+
+    public void aplicarDescontoVencimento() {
+        for (int i = 0; i < diasParaVencimento.size(); i++) {
+            if (diasParaVencimento.get(i) < 5) {
+                precos.set(i, precos.get(i) * 0.5);
+            }
+        }
+    }
+
+    public void medicamentosProximosDeVencer() {
+        for (int i = 0; i < diasParaVencimento.size(); i++) {
+            if (diasParaVencimento.get(i) < 5) {
+                System.out.println("Atenção: " + nomesMedicamentos.get(i) + " está para vencer em " + diasParaVencimento.get(i) + " dias.");
+            }
+        }
+    }
+
+    public void venderMedicamento(String nome) {
+        int index = nomesMedicamentos.indexOf(nome);
+        if (index >= 0) {
+            nomesMedicamentos.remove(index);
+            diasParaVencimento.remove(index);
+            precos.remove(index);
+            System.out.println(nome + " vendido com sucesso.");
+        } else {
+            System.out.println("Medicamento não encontrado.");
+        }
+    }
+
+    public static void main(String[] args) {
+        Farmacia farmacia = new Farmacia();
+        farmacia.adicionarMedicamento("Paracetamol", 3, 10.0);
+        farmacia.adicionarMedicamento("Ibuprofeno", 10, 15.0);
+        farmacia.adicionarMedicamento("Amoxicilina", 2, 20.0);
+
+        farmacia.mostrarMedicamentos();
+        System.out.println("Média de dias para vencimento: " + farmacia.mediaDiasParaVencer());
+
+        farmacia.medicamentosProximosDeVencer();
+        farmacia.aplicarDescontoVencimento();
+        farmacia.mostrarMedicamentos();
+
+        farmacia.venderMedicamento("Paracetamol");
+        farmacia.mostrarMedicamentos();
+    }
+}
+
