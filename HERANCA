@@ -1,0 +1,182 @@
+import java.util.Scanner;
+ 
+// ---------------------------
+// INTERFACE DE OPERAÇÕES MATEMÁTICAS
+// ---------------------------
+interface OperacaoMatematica {
+    double soma(double a, double b);
+    double subtracao(double a, double b);
+    double multiplicacao(double a, double b);
+    double divisao(double a, double b);
+}
+ 
+// ---------------------------
+// CLASSE CALCULADORA
+// ---------------------------
+class Calculadora implements OperacaoMatematica {
+ 
+    @Override
+    public double soma(double a, double b) {
+        return a + b;
+    }
+ 
+    @Override
+    public double subtracao(double a, double b) {
+        return a - b;
+    }
+ 
+    @Override
+    public double multiplicacao(double a, double b) {
+        return a * b;
+    }
+ 
+    @Override
+    public double divisao(double a, double b) {
+        if (b == 0) {
+            System.out.println("Erro: divisão por zero!");
+            return 0;
+        }
+        return a / b;
+    }
+}
+ 
+// ---------------------------
+// INTERFACE DE PAGAMENTO
+// ---------------------------
+interface Pagamento {
+    double calcularPagamento();
+    String emitirRecibo();
+}
+ 
+// ---------------------------
+// CLASSE PAGAMENTO CARTÃO
+// ---------------------------
+class PagamentoCartao implements Pagamento {
+    private double valor;
+ 
+    public PagamentoCartao(double valor) {
+        this.valor = valor;
+    }
+ 
+    @Override
+    public double calcularPagamento() {
+        return valor * 1.05; // taxa de 5%
+    }
+ 
+    @Override
+    public String emitirRecibo() {
+        return String.format("Pagamento com Cartão\nValor original: R$ %.2f\nTaxa (5%%): R$ %.2f\nTotal: R$ %.2f",
+                valor, valor * 0.05, calcularPagamento());
+    }
+}
+ 
+// ---------------------------
+// CLASSE PAGAMENTO DINHEIRO
+// ---------------------------
+class PagamentoDinheiro implements Pagamento {
+    private double valor;
+ 
+    public PagamentoDinheiro(double valor) {
+        this.valor = valor;
+    }
+ 
+    @Override
+    public double calcularPagamento() {
+        return valor * 0.90; // desconto de 10%
+    }
+ 
+    @Override
+    public String emitirRecibo() {
+        return String.format("Pagamento em Dinheiro\nValor original: R$ %.2f\nDesconto (10%%): R$ %.2f\nTotal: R$ %.2f",
+                valor, valor * 0.10, calcularPagamento());
+    }
+}
+ 
+// ---------------------------
+// INTERFACE AUTENTICÁVEL
+// ---------------------------
+interface Autenticavel {
+    boolean login(String usuario, String senha);
+    void logout();
+}
+ 
+// ---------------------------
+// CLASSE SISTEMA DE SEGURANÇA
+// ---------------------------
+class SistemaDeSeguranca implements Autenticavel {
+    private final String usuarioCorreto = "admin";
+    private final String senhaCorreta = "1234";
+    private boolean autenticado = false;
+ 
+    @Override
+    public boolean login(String usuario, String senha) {
+        if (usuario.equals(usuarioCorreto) && senha.equals(senhaCorreta)) {
+            autenticado = true;
+            System.out.println("✅ Login realizado com sucesso!");
+        } else {
+            System.out.println("❌ Usuário ou senha incorretos. Tente novamente.");
+        }
+        return autenticado;
+    }
+ 
+    @Override
+    public void logout() {
+        autenticado = false;
+        System.out.println("👋 Logout realizado com sucesso!");
+    }
+ 
+    public boolean isAutenticado() {
+        return autenticado;
+    }
+}
+ 
+// ---------------------------
+// CLASSE PRINCIPAL (TESTES)
+// ---------------------------
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+ 
+        // --- Teste da Calculadora ---
+        System.out.println("=== TESTE CALCULADORA ===");
+        Calculadora calc = new Calculadora();
+        System.out.println("Soma (10 + 5): " + calc.soma(10, 5));
+        System.out.println("Subtração (10 - 5): " + calc.subtracao(10, 5));
+        System.out.println("Multiplicação (10 * 5): " + calc.multiplicacao(10, 5));
+        System.out.println("Divisão (10 / 5): " + calc.divisao(10, 5));
+        System.out.println();
+ 
+        // --- Teste de Pagamentos ---
+        System.out.println("=== TESTE PAGAMENTOS ===");
+        double valor = 100.0;
+        Pagamento cartao = new PagamentoCartao(valor);
+        Pagamento dinheiro = new PagamentoDinheiro(valor);
+        System.out.println(cartao.emitirRecibo());
+        System.out.println("---------------------------");
+        System.out.println(dinheiro.emitirRecibo());
+        System.out.println();
+ 
+        // --- Teste do Sistema de Segurança ---
+        System.out.println("=== TESTE AUTENTICAÇÃO ===");
+        SistemaDeSeguranca sistema = new SistemaDeSeguranca();
+ 
+        while (!sistema.isAutenticado()) {
+            System.out.print("Usuário: ");
+            String usuario = scanner.nextLine();
+            System.out.print("Senha: ");
+            String senha = scanner.nextLine();
+            sistema.login(usuario, senha);
+        }
+ 
+        System.out.println("🎉 Bem-vindo ao sistema, admin!");
+ 
+        System.out.print("Deseja fazer logout? (s/n): ");
+        String resposta = scanner.nextLine();
+        if (resposta.equalsIgnoreCase("s")) {
+            sistema.logout();
+        }
+ 
+        System.out.println("Fim do programa!");
+        scanner.close();
+    }
+}
