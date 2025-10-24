@@ -1,0 +1,186 @@
+import java.util.Scanner;
+ 
+// ===============================
+// Exercício 1 – Sobrescrita de métodos em Veículos
+// ===============================
+class Veiculo {
+    void mover() {
+        System.out.println("O veículo está se movendo");
+    }
+}
+ 
+class Carro extends Veiculo {
+    @Override
+    void mover() {
+        System.out.println("O carro está dirigindo");
+    }
+}
+ 
+class Bicicleta extends Veiculo {
+    @Override
+    void mover() {
+        System.out.println("A bicicleta está pedalando");
+    }
+}
+ 
+// ===============================
+// Exercício 2 – Sobrecarga de métodos
+// ===============================
+class Calculadora {
+    int somar(int a, int b) {
+        return a + b;
+    }
+ 
+    int somar(int a, int b, int c) {
+        return a + b + c;
+    }
+ 
+    double somar(double a, double b) {
+        return a + b;
+    }
+}
+ 
+// ===============================
+// Exercício 3 – Sobrecarga de construtores
+// ===============================
+class Produto {
+    String nome;
+    double preco;
+    int quantidade;
+ 
+    Produto(String nome) {
+        this.nome = nome;
+        this.preco = 0;
+        this.quantidade = 0;
+    }
+ 
+    Produto(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+        this.quantidade = 0;
+    }
+ 
+    Produto(String nome, double preco, int quantidade) {
+        this.nome = nome;
+        this.preco = preco;
+        this.quantidade = quantidade;
+    }
+ 
+    void exibirInfo() {
+        System.out.println("Produto: " + nome + ", Preço: " + preco + ", Quantidade: " + quantidade);
+    }
+}
+ 
+// ===============================
+// Exercício 4 – Sobrescrita de métodos em Pagamento
+// ===============================
+class Pagamento {
+    void processarPagamento() {
+        System.out.println("Processando pagamento genérico");
+    }
+}
+ 
+class PagamentoCartao extends Pagamento {
+    @Override
+    void processarPagamento() {
+        System.out.println("Processando pagamento via cartão de crédito");
+    }
+}
+ 
+class PagamentoBoleto extends Pagamento {
+    @Override
+    void processarPagamento() {
+        System.out.println("Processando pagamento via boleto bancário");
+    }
+}
+ 
+// ===============================
+// Exercício 5 – Sobrecarga de métodos em Conversor
+// ===============================
+class Conversor {
+    double converter(double celsius) {
+        return (celsius * 9 / 5) + 32;
+    }
+ 
+    double converter(double km, boolean kmParaMilhas) {
+        if (kmParaMilhas) return km * 0.621371;
+        else return km / 0.621371;
+    }
+ 
+    String converter(String texto) {
+        return texto.toUpperCase();
+    }
+}
+ 
+// ===============================
+// Programa Principal com Menu
+// ===============================
+public class PolimorfismoCompleto {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int opcao;
+ 
+        do {
+            System.out.println("\n=== MENU DE EXERCÍCIOS DE POLIMORFISMO ===");
+            System.out.println("1. Sobrescrita de métodos (Veículo)");
+            System.out.println("2. Sobrecarga de métodos (Calculadora)");
+            System.out.println("3. Sobrecarga de construtores (Produto)");
+            System.out.println("4. Sobrescrita de métodos (Pagamento)");
+            System.out.println("5. Sobrecarga de métodos (Conversor)");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+            opcao = sc.nextInt();
+ 
+            switch (opcao) {
+                case 1 -> {
+                    System.out.println("\n--- Exercício 1: Veículos ---");
+                    Veiculo v1 = new Carro();
+                    Veiculo v2 = new Bicicleta();
+                    v1.mover();
+                    v2.mover();
+                }
+ 
+                case 2 -> {
+                    System.out.println("\n--- Exercício 2: Calculadora ---");
+                    Calculadora calc = new Calculadora();
+                    System.out.println("Somar(2, 3): " + calc.somar(2, 3));
+                    System.out.println("Somar(2, 3, 4): " + calc.somar(2, 3, 4));
+                    System.out.println("Somar(2.5, 3.7): " + calc.somar(2.5, 3.7));
+                }
+ 
+                case 3 -> {
+                    System.out.println("\n--- Exercício 3: Produto ---");
+                    Produto p1 = new Produto("Café");
+                    Produto p2 = new Produto("Leite", 5.50);
+                    Produto p3 = new Produto("Açúcar", 4.20, 10);
+ 
+                    p1.exibirInfo();
+                    p2.exibirInfo();
+                    p3.exibirInfo();
+                }
+ 
+                case 4 -> {
+                    System.out.println("\n--- Exercício 4: Pagamento ---");
+                    Pagamento p1 = new PagamentoCartao();
+                    Pagamento p2 = new PagamentoBoleto();
+ 
+                    p1.processarPagamento();
+                    p2.processarPagamento();
+                }
+ 
+                case 5 -> {
+                    System.out.println("\n--- Exercício 5: Conversor ---");
+                    Conversor conv = new Conversor();
+                    System.out.println("25°C em Fahrenheit: " + conv.converter(25.0));
+                    System.out.println("10 Km em Milhas: " + conv.converter(10.0, true));
+                    System.out.println("Texto em maiúsculas: " + conv.converter("polimorfismo"));
+                }
+ 
+                case 0 -> System.out.println("Encerrando o programa...");
+                default -> System.out.println("Opção inválida!");
+            }
+        } while (opcao != 0);
+ 
+        sc.close();
+    }
+}
